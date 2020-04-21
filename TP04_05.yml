@@ -1,0 +1,20 @@
+---
+ - hosts: glpi
+   remote_user: glpi
+   become: yes
+   tasks:
+           - name: "Executa o container MySQL"
+             docker_container:
+                     name: mysql
+                     image: mysql:5.7.23
+                     env:
+                             MYSQL_ROOT_PASSWORD: senha123
+           - name: "Executa o container GLPI"
+             docker_container:
+                     name: glpi
+                     image: diouxx/glpi
+                     links:
+                             - "mysql:mysql"
+                     ports:
+                             - "8080:80"
+
